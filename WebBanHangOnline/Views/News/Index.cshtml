@@ -1,0 +1,116 @@
+﻿@model IEnumerable<WebBanHangOnline.Models.EF.Order>
+@{
+    ViewBag.Title = "Index";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/main_styles.css">
+<!-- Slider -->
+<style>
+    .news_section_container {
+        margin-top: 180px;
+    }
+
+    .row-item-new {
+        margin-bottom: 20px;
+    }
+
+    .title-news {
+        font-size: 24px;
+        border-bottom: 1px solid;
+        padding: 15px 0;
+        margin-bottom: 25px;
+    }
+
+    .img-box img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    /* CSS for Orders Table */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    .no-orders {
+        font-style: italic;
+        color: #999999;
+    }
+</style>
+<div class="container news_section_container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="title-news">Tìm Kiếm Đơn Hàng</h1>
+        </div>
+    </div>
+    @using (Html.BeginForm("Index", "News", FormMethod.Get))
+    {
+        <p>
+            Search by Phone:
+            @Html.TextBox("searchPhone", ViewBag.SearchPhone as string)
+            <input type="submit" value="Search" />
+        </p>
+    }
+
+    @if (!string.IsNullOrEmpty(ViewBag.SearchPhone) && Model.Any())
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã Đơn</th>
+                    <th>Tên Người Đặt</th>
+                    <th>Số Điện Thoại</th>
+                    <th>Địa Chỉ</th>
+                    <th>Ngày Đặt</th>
+                    <th>Tổng Cộng</th>
+                    <th>Tình Trạng Thanh Toán</th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                <tr>
+                    <td>@order.Code</td>
+                    <td>@order.CustomerName</td>
+                    <td>@order.Phone</td>
+                    <td>@order.Address</td>
+                    <td>@order.CreatedDate</td>
+                    <td>@order.TotalAmount</td>
+                    <td>
+                        @if (order.Status == 1)
+                        {
+                            <span>Chưa Thanh Toán</span>
+                        }
+                        else if (order.Status == 2)
+                        {
+                            <span>Đã Thanh Toán</span>
+                        }
+                        else
+                        {
+                            <span>Trạng thái không xác định</span>
+                        }
+                    </td>
+
+
+
+                </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="no-orders">No orders found for this phone number.</p>
+    }
+</div>

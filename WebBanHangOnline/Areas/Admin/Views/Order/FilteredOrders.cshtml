@@ -1,0 +1,75 @@
+﻿@model List<WebBanHangOnline.Models.EF.Order>
+
+@{
+    ViewBag.Title = "Filtered Orders";
+}
+<div class="container">
+    <h2 class="text-center">Thống Kê Đơn Hàng</h2>
+
+    @using (Html.BeginForm("FilteredOrders", "Order", FormMethod.Get))
+    {
+        <div style="display: flex; align-items: baseline;">
+            <div style="margin-right: 10px;">
+                <label for="day">Day:</label>
+                @Html.TextBox("day", null, new { type = "number", min = "1", max = "31" })
+            </div>
+            <div style="margin-right: 10px;">
+                <label for="month">Month:</label>
+                @Html.TextBox("month", null, new { type = "number", min = "1", max = "12" })
+            </div>
+            <div style="margin-right: 10px;">
+                <label for="year">Year:</label>
+                @Html.TextBox("year", null, new { type = "number", min = "2000", max = "2100" })
+            </div>
+            <div>
+                <input type="submit" value="Lọc" />
+            </div>
+        </div>
+    }
+
+    @if (Model != null && Model.Count > 0)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Mã đơn hàng</th>
+                    <th>Tên Khách hàng</th>
+                    <th>Phone</th>
+                    <th>Tiền</th>
+                    <th>Trạng thái</th>
+                    <th>Ngày tạo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    var i = 1;
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@i</td>
+                            <td>@item.Code</td>
+                            <td>@item.CustomerName</td>
+                            <td>@item.Phone</td>
+                            <td>@WebBanHangOnline.Common.Common.FormatNumber(item.TotalAmount, 0)</td>
+                            <td>@(item.TypePayment==1?"Chờ thành toán":"Đã thanh toán")</td>
+                            <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                        </tr>
+                        i++;
+                    }
+                }
+            </tbody>
+        </table>
+        <div>
+            <h3>Tổng Doanh Thu: @ViewBag.TotalRevenue</h3>
+          
+            <h3>Tổng lợi nhuận từ tất cả sản phẩm: @ViewBag.TotalProfit</h3>
+            
+        </div>
+    }
+    else
+    {
+        <p>Không Có Dữ Liệu</p>
+    }
+</div>

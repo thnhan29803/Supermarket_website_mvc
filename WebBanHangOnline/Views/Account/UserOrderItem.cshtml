@@ -1,0 +1,62 @@
+﻿@model WebBanHangOnline.Models.EF.Order
+
+
+<div class="order-container">
+    <p class="order-header">
+        Đơn hàng số: @Model.Id
+        <!-- Thêm một nút hoặc liên kết để mở rộng chi tiết đơn hàng -->
+        <button type="button" class="btn btn-link" onclick="showOrderDetails('@Model.Id')">Xem chi tiết</button>
+    </p>
+    <!-- Dùng một div ẩn để chứa thông tin chi tiết đơn hàng -->
+    <div id="orderDetails_@Model.Id" class="order-details">
+        <!-- Hiển thị thông tin chi tiết đơn hàng -->
+        @foreach (var detail in Model.OrderDetails)
+        {<p>Mã Chi Tiết: @detail.Id</p>
+        <p>Tên Sản Phâm: @detail.Product.Title</p>
+        <p>Số Lượng Sản Phẩm: @detail.Quantity</p>
+        <p>Giá: @detail.Price</p>
+        <p>
+            Phương Thức Thanh Toán:
+
+            @if (detail.Order.TypePayment == 1)
+            {
+                <span>Cod</span>
+            }
+            else if (detail.Order.TypePayment == 2)
+            {
+                <span>Online</span>
+
+            }
+
+        </p>
+        <p>
+            Tình Trạng Thanh Toán:
+
+            @if (detail.Order.Status == 1)
+            {
+                <span>Chưa Thanh Toán</span>
+            }
+            else if (detail.Order.Status == 2)
+            {
+                <span>Đã Thanh Toán</span>
+            }
+
+
+        </p>
+        <p>Ngày Đặt:@detail.Order.CreatedDate</p>
+        <p>Mã Đơn: @detail.OrderId</p>
+    }
+    </div>
+</div>
+<script>
+    function showOrderDetails(orderId) {
+        // Hiển thị hoặc ẩn đi thông tin chi tiết đơn hàng dựa trên orderId
+        var orderDetailsDiv = document.getElementById('orderDetails_' + orderId);
+        if (orderDetailsDiv.style.display === 'none') {
+            orderDetailsDiv.style.display = 'block'; B
+        } else {
+            orderDetailsDiv.style.display = 'none';
+        }
+    }
+</script>
+

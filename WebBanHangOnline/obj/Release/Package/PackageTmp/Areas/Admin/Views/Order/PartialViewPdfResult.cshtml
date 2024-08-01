@@ -1,0 +1,55 @@
+﻿@model List<WebBanHangOnline.Models.EF.Order>
+<div class="card-body">
+<table class="table table-bordered">
+    <thead>
+        <tr>
+                <th>STT</th>
+                <th>Mã Đơn</th>
+                <th>Tên Khách Hàng</th>
+                <th>SĐT</th>
+                <th>Trị Giá</th>
+                <th>Trạng Thái</th>
+                <th>Ngày Tạo</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            var i = 0;
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@i</td>
+                    <td>@item.Code</td>
+                    <td>@item.CustomerName</td>
+                    <td>@item.Phone</td>
+                    <td>@WebBanHangOnline.Common.Common.FormatNumber(item.TotalAmount, 0)</td>
+                    <td>@(item.TypePayment==1?"Chờ thành toán":"Đã thanh toán")</td>
+                    <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                </tr>
+                i++;
+            }
+        }
+    </tbody>
+</table>
+
+</div>
+
+@if (Model != null && Model.Any())
+{
+    var i = 0;
+    decimal price = 0;
+    foreach (var item in Model)
+    {
+        price += item.TotalAmount;
+        i++;
+        price++;
+    }
+    <div style="margin-top:50px;">
+        <div><p style="font-size:20px;">Tổng Đơn Hàng: @i</p></div>
+        <div><p style="font-size:20px;">Tổng Tiền : @WebBanHangOnline.Common.Common.FormatNumber(price, 0)</p></div>
+    </div>
+}
+
+
+

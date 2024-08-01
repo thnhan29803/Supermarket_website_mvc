@@ -1,0 +1,19 @@
+﻿@model IEnumerable<WebBanHangOnline.Models.EF.Order>
+
+
+
+
+<h3>Danh sách các đơn hàng Của Bạn</h3>
+@if (Model != null && Model.Any())
+{
+    foreach (var order in Model)
+    {
+        @Html.Partial("UserOrderItem", order)
+    }
+}
+else
+{
+    <p>Không có đơn hàng nào.</p>
+}
+
+

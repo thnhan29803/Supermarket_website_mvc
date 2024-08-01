@@ -1,0 +1,45 @@
+﻿@using WebBanHangOnline.Models
+@model List<FileModel>
+@{
+    ViewBag.Title = "Danh sách File";
+
+}
+
+<div class="container" style="margin-top:50px;">
+    <div style="font-size:30px;" class="text-center">Các File Báo Cáo Đã Xuất</div>
+
+    <table style="margin-right:auto;margin-left:auto; margin-top:40px;" class="table-bordered">
+        <tr>
+            <th>File Name</th>
+            <th>Thao Tác</th>
+        </tr>
+        @foreach (FileModel file in Model)
+        {
+
+    <tr>
+        <td>@file.FileName</td>
+        <td>
+            @Html.ActionLink("Download", "DownloadFile", new { fileName = file.FileName })
+        </td>
+
+        <td>
+            <form action="@Url.Action("DeleteFile", "Order")" method="post">
+                <input type="hidden" name="fileName" value="@file.FileName" />
+                <button type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa file?')">Xóa File</button>
+            </form>
+        </td>
+    </tr>
+        }
+    </table>
+</div>
+<script>
+    $.ajax({
+        //...
+        success: function (result) {
+            alert(result); // Hiển thị thông điệp từ server trong hộp thoại alert
+            window.location.href = '/Controller/ListFile'; // Redirect sau khi nhận phản hồi từ server
+        },
+        //...
+    });
+</script>
+

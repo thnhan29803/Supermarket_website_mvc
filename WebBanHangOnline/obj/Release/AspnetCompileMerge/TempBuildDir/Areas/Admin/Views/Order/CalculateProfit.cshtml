@@ -1,0 +1,82 @@
+﻿@model List<WebBanHangOnline.Models.ProfitViewModel>
+
+@{
+    ViewBag.Title = "CalculateProfit";
+}
+
+<style>
+    table {
+        font-family: Arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .container {
+        margin-top: 20px;
+    }
+
+    .month-filter {
+        margin-bottom: 10px;
+    }
+</style>
+
+<div class="container">
+    <h2 class="text-center">Lợi nhuận theo tháng</h2>
+
+    <div class="month-filter">
+        <form action="@Url.Action("CalculateProfit", "Order")" method="get">
+
+
+            <label for="month">Tháng:</label>
+            <input type="number" id="month" name="month" min="1" max="12">
+            <label for="year">Năm:</label>
+            <input type="number" id="year" name="year" min="2000" max="2100">
+
+            <input type="submit" value="Lọc">
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên Sản Phẩm</th>
+                <th>Năm</th>
+                <th>Tháng</th>
+                <th>Ngày Đặt</th>
+                <th>Lợi nhuận</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ProductId</td>
+                    <td>@item.ProductName</td>
+                    <td>@item.Year</td>
+                    <td>@item.Month</td>
+                    <td>@item.OrderDate</td>
+                    <td>@item.TotalProfit.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div>
+        <h3>Tổng lợi nhuận: @ViewBag.TotalProfit.ToString("C")</h3>
+    </div>
+</div>
